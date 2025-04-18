@@ -5,9 +5,9 @@ import Label from "../Label";
 
 export default function TextAreaInput() {
   const [message, setMessage] = useState("");
-  const [messageTwo, setMessageTwo] = useState("");
+  // const [messageTwo, setMessageTwo] = useState("");
   return (
-    <ComponentCard title="Textarea input field">
+    <ComponentCard title="Book Description">
       <div className="space-y-6">
         {/* Default TextArea */}
         <div>
@@ -19,14 +19,14 @@ export default function TextAreaInput() {
           />
         </div>
 
-        {/* Disabled TextArea */}
+        {/* Disabled TextArea 
         <div>
           <Label>Description</Label>
           <TextArea rows={6} disabled />
-        </div>
+        </div> 
 
-        {/* Error TextArea */}
-        <div>
+         Error TextArea 
+         <div>
           <Label>Description</Label>
           <TextArea
             rows={6}
@@ -35,7 +35,7 @@ export default function TextAreaInput() {
             onChange={(value) => setMessageTwo(value)}
             hint="Please enter a valid message."
           />
-        </div>
+        </div> */}
       </div>
     </ComponentCard>
   );

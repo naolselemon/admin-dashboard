@@ -1,35 +1,70 @@
-import { useState } from "react";
+// import { useState } from "react";
 import ComponentCard from "../../common/ComponentCard";
 import Label from "../Label";
 import Input from "../input/InputField";
 import Select from "../Select";
-import { EyeCloseIcon, EyeIcon, TimeIcon } from "../../../icons";
+// import { EyeCloseIcon, EyeIcon, TimeIcon } from "../../../icons";
 import DatePicker from "../date-picker.tsx";
 
 export default function DefaultInputs() {
-  const [showPassword, setShowPassword] = useState(false);
+  // const [showPassword, setShowPassword] = useState(false);
   const options = [
-    { value: "marketing", label: "Marketing" },
-    { value: "template", label: "Template" },
-    { value: "development", label: "Development" },
-  ];
+    { value: "Fiction", label: "Fiction" },
+    { value: "Education", label: "Education" },
+    { value: "Psychology", label: "Psychology"},
+    { value: "Motivation", label: "Motivation"},
+    { value: "Fitness", label: "Fitness"},
+    { value: "Romance", label: "Romance" },
+    { value: "Mystery", label: "Mystery" },
+    { value: "Thriller", label: "Thriller" },
+    { value: "Science Fiction", label: "Science Fiction" },
+    { value: "Fantasy", label: "Fantasy" },
+    { value: "Biography", label: "Biography" },
+    { value: "Self-Help", label: "Self-Help" },
+    { value: "Business", label: "Business" },
+    { value: "Health", label: "Health" },
+    { value: "Travel", label: "Travel" },
+    { value: "History", label: "History" },
+    { value: "Children", label: "Children" },
+    { value: "Young Adult", label: "Young Adult" },
+    { value: "Horror", label: "Horror" },
+    { value: "Religion", label: "Religion" },
+    { value: "Spirituality", label: "Spirituality" },
+    { value: "Comics", label: "Comics" },
+    { value: "Technology", label: "Technology" },
+    { value: "Cooking", label: "Cooking" },
+    { value: "Parenting", label: "Parenting" },
+    { value: "True Crime", label: "True Crime" },
+    { value: "Poetry", label: "Poetry" },
+    { value: "Drama", label: "Drama" },
+    { value: "Art", label: "Art" },
+    { value: "Photography", label: "Photography" },
+    { value: "Science", label: "Science" },
+    { value: "Law", label: "Law" },
+
+
+      ];
   const handleSelectChange = (value: string) => {
     console.log("Selected value:", value);
   };
 
   return (
-    <ComponentCard title="Default Inputs">
+    <ComponentCard title="Insert New Book Information">
       <div className="space-y-6">
         <div>
-          <Label htmlFor="input">Input</Label>
+          <Label htmlFor="input">Book Title</Label>
           <Input type="text" id="input" />
         </div>
         <div>
-          <Label htmlFor="inputTwo">Input with Placeholder</Label>
-          <Input type="text" id="inputTwo" placeholder="info@gmail.com" />
+          <Label htmlFor="input">Book Author</Label>
+          <Input type="text" id="input" />
         </div>
         <div>
-          <Label>Select Input</Label>
+          <Label htmlFor="input">Book Prices</Label>
+          <Input type="text" id="input" placeholder="100.00 Birr"/>
+        </div>
+        <div>
+          <Label>Select Genres</Label>
           <Select
             options={options}
             placeholder="Select an option"
@@ -37,7 +72,20 @@ export default function DefaultInputs() {
             className="dark:bg-dark-900"
           />
         </div>
+
         <div>
+          <DatePicker
+            id="date-picker"
+            label="Date Picker Input"
+            placeholder="Select a date"
+            onChange={(dates, currentDateString) => {
+              // Handle your logic
+              console.log({ dates, currentDateString });
+            }}
+          />
+        </div>
+
+        {/* <div>
           <Label>Password Input</Label>
           <div className="relative">
             <Input
@@ -55,19 +103,8 @@ export default function DefaultInputs() {
               )}
             </button>
           </div>
-        </div>
+        </div> 
 
-        <div>
-          <DatePicker
-            id="date-picker"
-            label="Date Picker Input"
-            placeholder="Select a date"
-            onChange={(dates, currentDateString) => {
-              // Handle your logic
-              console.log({ dates, currentDateString });
-            }}
-          />
-        </div>
 
         <div>
           <Label htmlFor="tm">Time Picker Input</Label>
@@ -108,8 +145,8 @@ export default function DefaultInputs() {
               </svg>
             </span>
           </div>
-        </div>
-      </div>
+        </div> */}
+      </div> 
     </ComponentCard>
   );
 }
