@@ -5,7 +5,7 @@ import FileInputExample from "../../components/form/form-elements/FileInputExamp
 import TextAreaInput from "../../components/form/form-elements/TextAreaInput";
 import PageMeta from "../../components/common/PageMeta";
 import { useState } from "react";
-import { db } from "../../appwrite/databases"; 
+import { db, uploadFile } from "../../appwrite/databases"; 
 
 export default function FormElements() {
   const [bookData, setBookData] = useState({
@@ -30,6 +30,19 @@ export default function FormElements() {
     e.preventDefault();
 
     try {
+      let fileId: string | null = null;
+      let imageId: string | null = null;
+
+      if (bookData.file){
+        const fileResponse =  await uploadFile(bookData.file);
+         fileId  = fileResponse.$id
+      }
+
+      if (bookData.image){
+        const imageResponse = await uploadFile(bookData.image);
+        imageId = imageResponse.$id
+      }
+     
      
       const bookPayload = {
         title: bookData.title,
@@ -38,7 +51,8 @@ export default function FormElements() {
         genre: bookData.genre,
         publishDate: bookData.publishDate,
         description: bookData.description,
-        
+        fileId,
+        imageId
       };
 
       

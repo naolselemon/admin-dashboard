@@ -9,6 +9,7 @@ interface TextareaProps {
   disabled?: boolean; // Disabled state
   error?: boolean; // Error state
   hint?: string; // Hint text to display
+  
 }
 
 const TextArea: React.FC<TextareaProps> = ({
@@ -40,6 +41,7 @@ const TextArea: React.FC<TextareaProps> = ({
   return (
     <div className="relative">
       <textarea
+        required
         placeholder={placeholder}
         rows={rows}
         value={value}

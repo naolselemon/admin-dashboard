@@ -70,6 +70,7 @@ export default function DefaultInputs({ bookData, onChange }: DefaultInputsProps
         <div>
           <Label htmlFor="author">Book Author</Label>
           <Input
+            
             type="text"
             id="author"
             value={bookData.author}
@@ -79,6 +80,7 @@ export default function DefaultInputs({ bookData, onChange }: DefaultInputsProps
         <div>
           <Label htmlFor="price">Book Prices</Label>
           <Input
+            
             type="text"
             id="price"
             value={bookData.price}
@@ -88,6 +90,7 @@ export default function DefaultInputs({ bookData, onChange }: DefaultInputsProps
         <div>
           <Label>Select Genres</Label>
           <Select
+            
             options={options}
             value={bookData.genre}
             placeholder="Select a genre"
@@ -96,6 +99,7 @@ export default function DefaultInputs({ bookData, onChange }: DefaultInputsProps
         </div>
         <div>
           <DatePicker
+         
             id="date-picker"
             label="Date Picker Input"
             placeholder="Select a date"

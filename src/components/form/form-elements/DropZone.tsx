@@ -8,7 +8,7 @@ interface DropzoneComponentProps {
 const DropzoneComponent: React.FC<DropzoneComponentProps> = ({ onDrop }) => {
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop: (acceptedFiles: File[]) => {
-      onDrop(acceptedFiles[0] || null); // Pass the first file or null
+      onDrop(acceptedFiles[0] || null); 
     },
     accept: {
       "image/png": [],
@@ -33,7 +33,7 @@ const DropzoneComponent: React.FC<DropzoneComponentProps> = ({ onDrop }) => {
           `}
           id="demo-upload"
         >
-          <input {...getInputProps()} />
+          <input {...getInputProps()} required />
           <div className="dz-message flex flex-col items-center m-0!">
             <div className="mb-[22px] flex justify-center">
               <div className="flex h-[68px] w-[68px] items-center justify-center rounded-full bg-gray-200 text-gray-700 dark:bg-gray-800 dark:text-gray-400">

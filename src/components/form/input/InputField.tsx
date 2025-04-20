@@ -16,6 +16,7 @@ interface InputProps {
   success?: boolean;
   error?: boolean;
   hint?: string;
+ 
 }
 
 const Input: FC<InputProps> = ({
@@ -23,6 +24,7 @@ const Input: FC<InputProps> = ({
   id,
   name,
   placeholder,
+ 
   value,
   onChange,
   className = "",
@@ -52,6 +54,7 @@ const Input: FC<InputProps> = ({
         type={type}
         id={id}
         name={name}
+        required
         placeholder={placeholder}
         value={value}
         onChange={onChange}
