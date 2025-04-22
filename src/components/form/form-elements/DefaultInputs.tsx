@@ -10,7 +10,7 @@ interface BookData {
   author: string;
   price: string; 
   genre: string;
-  publishDate: string;
+  date: string;
 }
 
 
@@ -104,7 +104,7 @@ export default function DefaultInputs({ bookData, onChange }: DefaultInputsProps
             label="Date Picker Input"
             placeholder="Select a date"
             onChange={(dates, dateString) => {
-              onChange("publishDate", dateString);
+              onChange("date", dateString);
             }}
           />
         </div>

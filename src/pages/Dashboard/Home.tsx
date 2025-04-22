@@ -6,7 +6,30 @@ import StatisticsChart from "../../components/ecommerce/StatisticsChart";
 // import DemographicCard from "../../components/ecommerce/DemographicCard";
 // import PageMeta from "../../components/common/PageMeta";
 
+import { useEffect } from "react";
+import { useNavigate } from "react-router";
+
+import { account } from "../../appwrite/config";
+
+
 export default function Home() {
+  const navigate   =  useNavigate();
+  
+  useEffect(() => {
+    const checkAuth = async() => {
+      try {
+       const user =  await account.get()
+       if (!( user).labels.includes("admin")){
+        throw new Error("Unauthorized: Admin access required");
+       }
+       
+      }catch(error){
+        console.error("Auth check failed:", error);
+        navigate("/signin");
+      }
+    }
+    checkAuth();
+  }, [navigate])
   return (
     <>
 

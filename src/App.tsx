@@ -1,54 +1,76 @@
-import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router";
+import { BrowserRouter as Router, Routes, Route, Navigate, Outlet, useLocation } from "react-router-dom";
+import { useEffect, useState } from "react";
+
+import { account } from "./appwrite/config";
 import SignIn from "./pages/AuthPages/SignIn";
-import SignUp from "./pages/AuthPages/SignUp";
 import NotFound from "./pages/OtherPage/NotFound";
-
-import Avatars from "./pages/UiElements/Avatars";
-import Buttons from "./pages/UiElements/Buttons";
-import LineChart from "./pages/Charts/LineChart";
-import BarChart from "./pages/Charts/BarChart";
-
 import BasicTables from "./pages/Tables/BasicTables";
 import FormElements from "./pages/Forms/FormElements";
-import Blank from "./pages/Blank";
 import AppLayout from "./layout/AppLayout";
 import { ScrollToTop } from "./components/common/ScrollToTop";
 import Home from "./pages/Dashboard/Home";
+
+// import SignUp from "./pages/AuthPages/SignUp";
+// import Avatars from "./pages/UiElements/Avatars";
+// import Buttons from "./pages/UiElements/Buttons";
+// import LineChart from "./pages/Charts/LineChart";
+// import BarChart from "./pages/Charts/BarChart";
+// import Blank from "./pages/Blank";
+
+interface ProtectedRouteProps {
+  redirectPath?: string;
+}
+
+const ProtectedRoute: React.FC<ProtectedRouteProps> = ({redirectPath = "/signin"}) => {
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
+  const location = useLocation();
+
+  useEffect(() => {
+    const checkAuth = async ()=>{
+      try{
+        const user =  await account.get();
+        const isAdmin = user.labels?.includes("admin");
+        setIsAuthenticated(isAdmin);
+      }catch(error){
+        console.error("Auth check failed", error);
+        setIsAuthenticated(false)
+      }
+    }
+    checkAuth();
+  }, [])
+
+  if (isAuthenticated == null){
+    return <div>Loading...</div>
+  }
+
+  if(!isAuthenticated){
+    return <Navigate to={redirectPath} state={{from: location }} replace />
+  }
+
+  return <Outlet /> //rendering protected  routes.
+};
 
 export default function App() {
   return (
     <Router>
       <ScrollToTop />
       <Routes>
-        {/* Make SignIn the default route */}
-        {/* <Route index path="/" element={<Navigate to="/signin" replace />} /> */}
+         {/*Public Routes*/ }
+         <Route path="/signin" element={<SignIn/>} />
+         {/* Protected Routes under AppLayout*/}
+         <Route element={<ProtectedRoute/>}>
+          <Route element={<AppLayout/>}>
+            <Route path="/home" element={<Home/>}/>
+            <Route path="/form-elements" element={<FormElements/>}/>
+            <Route path="/basic-tables" element={<BasicTables/>}/>
+          </Route>
+         </Route>
 
-        {/* Dashboard Layout */}
-        <Route element={<AppLayout />}>
-          <Route path="/home" element={<Home />} />
-          {/* <Route path="/blank" element={<Blank />} /> */}
+          {/* Default Route */}
+         <Route index path="/" element={<Navigate to="/signin"  replace/>}/>
 
-          {/* Forms */}
-          <Route path="/form-elements" element={<FormElements />} />
-
-          {/* Tables */}
-          <Route path="/basic-tables" element={<BasicTables />} />
-
-          {/* Ui Elements
-          <Route path="/avatars" element={<Avatars />} />
-          <Route path="/buttons" element={<Buttons />} /> */}
-
-          {/* Charts */}
-          {/* <Route path="/line-chart" element={<LineChart />} />
-          <Route path="/bar-chart" element={<BarChart />} /> */}
-        </Route>
-
-        {/* Auth Pages */}
-        <Route path="/signin" element={<SignIn />} />
-        <Route path="/signup" element={<SignUp />} />
-
-        {/* Fallback Route */}
-        <Route path="*" element={<NotFound />} />
+         {/*Fallback Route */}
+         <Route path="*" element={< NotFound/>}/>
       </Routes>
     </Router>
   );
