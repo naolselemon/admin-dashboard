@@ -64,7 +64,15 @@ collections.forEach((collection) => {
     };
 });
 
-const uploadFile = (file: File) => storage.createFile(buckets.bucketId, ID.unique(), file);
+const uploadFile = async (file: File) => {
+    try{
+       const response =  storage.createFile(buckets.bucketId, ID.unique(), file)
+       return response;
+    }catch(error:any){
+        console.log("File upload failed: ", error);
+        throw new Error(error);
+    }
+    };
 
 const getUrl = (fileId: string) => storage.getFileDownload(buckets.bucketId, fileId );
 

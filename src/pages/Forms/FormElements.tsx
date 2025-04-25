@@ -40,6 +40,7 @@ export default function FormElements() {
     date: "",
     description: "",
     file: null as File | null,
+    audio: null as File | null,
     image: null as File | null,
   });
 
@@ -53,6 +54,10 @@ export default function FormElements() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
+
+    let fileId: string | null = null;
+    let imageId: string | null = null;
+    let audioId: string | null = null;
 
     try {
       if (!userId) {
@@ -75,8 +80,7 @@ export default function FormElements() {
         return;
       }
 
-      let fileId: string | null = null;
-      let imageId: string | null = null;
+
 
       if (bookData.file) {
         const fileResponse = await uploadFile(bookData.file);
@@ -87,16 +91,23 @@ export default function FormElements() {
       const imageResponse = await uploadFile(bookData.image);
       imageId = imageResponse.$id;
 
+      if (bookData.audio){
+        const audioResponse = await uploadFile(bookData.audio)
+        audioId = audioResponse.$id
+      }
+
       const bookPayload = {
-        title: bookData.title,
-        author: bookData.author,
-        price: parseFloat(bookData.price),
-        genre: bookData.genre,
-        date: bookData.date,
-        description: bookData.description,
-        fileId,
-        imageId,
-        adminId: userId,
+        "title": bookData.title,
+        "author": bookData.author,
+        "description": bookData.description,
+        "genre": bookData.genre,
+        "date": bookData.date,
+        "price": parseFloat(bookData.price),
+        "imageId": imageId,
+        "fileId": fileId,
+        "adminId": userId,
+        "audioId":audioId
+        
       };
 
       const response = await db.books.create(bookPayload);
@@ -106,12 +117,13 @@ export default function FormElements() {
       setBookData({
         title: "",
         author: "",
-        price: "",
+        description: "",
         genre: "",
         date: "",
-        description: "",
-        file: null,
+        price: "",
         image: null,
+        file: null,
+        audio: null,
       });
 
       toast.success("Book added successfully!");
@@ -143,7 +155,8 @@ export default function FormElements() {
             />
           </div>
           <div className="space-y-6">
-            <FileInputExample onChange={(file) => handleChange("file", file)} />
+            <FileInputExample onChange={(file) => handleChange("file", file)} label="Upload File"/>
+            <FileInputExample onChange={(audio) => handleChange("audio", audio)}  label="Upload Audio"/>
             <DropzoneComponent
               onDrop={(file) => {
                 if (file) {
