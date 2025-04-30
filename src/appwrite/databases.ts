@@ -1,17 +1,23 @@
 import { databases, storage } from "./config";
 import { ID, Models } from "appwrite";
 
+
+const env = {
+    bucketId: import.meta.env.VITE_BUCKET_ID,
+    endpoint: import.meta.env.VITE_ENDPOINT,
+    projectId: import.meta.env.VITE_PROJECT_ID,
+    databaseId: import.meta.env.VITE_DATABASE_ID,
+    bookCollections: import.meta.env.VITE_COLLECTION_BOOKS,
+}
 const collections = [
     {
-        databaseId: import.meta.env.VITE_DATABASE_ID,
-        collectionId: import.meta.env.VITE_COLLECTION_BOOKS,
+        databaseId: env.databaseId,
+        collectionId: env.bookCollections,
         name: "books",
     },
 ];
 
-const buckets = {
-    bucketId: import.meta.env.VITE_BUCKET_ID
-}
+
 
 interface DBMethods {
     list: (queries: string[]) => Promise<Models.DocumentList<Models.Document>>;
@@ -66,7 +72,7 @@ collections.forEach((collection) => {
 
 const uploadFile = async (file: File) => {
     try{
-       const response =  storage.createFile(buckets.bucketId, ID.unique(), file)
+       const response =  storage.createFile(env.bucketId, ID.unique(), file)
        return response;
     }catch(error:any){
         console.log("File upload failed: ", error);
@@ -74,6 +80,10 @@ const uploadFile = async (file: File) => {
     }
     };
 
-const getUrl = (fileId: string) => storage.getFileDownload(buckets.bucketId, fileId );
+const getFileViewUrl = (fileId) => {
+        return `${env.endpoint}/storage/buckets/${env.bucketId}/files/${fileId}/view?project=${env.projectId}`;
+      };
 
-export {db, uploadFile, getUrl};
+const getUrl = (fileId: string) => storage.getFileDownload(env.bucketId, fileId );
+
+export {db, uploadFile, getUrl, getFileViewUrl};

@@ -8,8 +8,9 @@ import DropzoneComponent from "../../components/form/form-elements/DropZone";
 import FileInputExample from "../../components/form/form-elements/FileInputExample";
 import TextAreaInput from "../../components/form/form-elements/TextAreaInput";
 import PageMeta from "../../components/common/PageMeta";
-import { db, uploadFile } from "../../appwrite/databases";
+import { db, getFileViewUrl, uploadFile } from "../../appwrite/databases";
 import { account } from "../../appwrite/config";
+import { ID } from "appwrite";
 
 export default function FormElements() {
   const [userId, setUserId] = useState("");
@@ -41,14 +42,15 @@ export default function FormElements() {
     description: "",
     file: null as File | null,
     audio: null as File | null,
-    image: null as File | null,
+    coverPage: null as File | null,
+    authorImage: null as File | null,
   });
 
   const handleChange = (field: keyof typeof bookData, value: string | File | null) => {
     setBookData((prev) => ({
       ...prev,
       [field]: value,
-    }));
+    }))
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -56,8 +58,11 @@ export default function FormElements() {
     setIsLoading(true);
 
     let fileId: string | null = null;
-    let imageId: string | null = null;
     let audioId: string | null = null;
+    let authorImageId: string | null = null;
+    let coverPageId: string | null = null;
+    let authorImageUrl: string | null = null;
+    let coverPageUrl: string | null = null;
 
     try {
       if (!userId) {
@@ -74,8 +79,8 @@ export default function FormElements() {
       }
 
       // Enforce image upload
-      if (!bookData.image || !bookData.file) {
-        toast.error("An image and file is required for the book");
+      if (!bookData.coverPage || !bookData.file || !bookData.audio || !bookData.authorImage) {
+        toast.error("Please upload a cover page, file, audio, and author image");
         setIsLoading(false);
         return;
       }
@@ -88,12 +93,19 @@ export default function FormElements() {
       }
 
       // Image is guaranteed to exist due to validation
-      const imageResponse = await uploadFile(bookData.image);
-      imageId = imageResponse.$id;
+      const imageResponse = await uploadFile(bookData.coverPage);
+      coverPageId = imageResponse.$id;
+      coverPageUrl = getFileViewUrl(coverPageId);
 
       if (bookData.audio){
         const audioResponse = await uploadFile(bookData.audio)
         audioId = audioResponse.$id
+      }
+
+      if (bookData.authorImage) {
+        const authorImageResponse = await uploadFile(bookData.authorImage);
+        authorImageId = authorImageResponse.$id;
+        authorImageUrl = getFileViewUrl(authorImageId);
       }
 
       const bookPayload = {
@@ -103,11 +115,15 @@ export default function FormElements() {
         "genre": bookData.genre,
         "date": bookData.date,
         "price": parseFloat(bookData.price),
-        "imageId": imageId,
+        "coverPageId": coverPageId,
         "fileId": fileId,
         "adminId": userId,
-        "audioId":audioId
-        
+        "audioId":audioId,
+        "authorImageId": authorImageId,
+        "coverPageUrl": coverPageUrl,
+        "authorImageUrl": authorImageUrl,
+        "bookId": ID.unique(),
+      
       };
 
       const response = await db.books.create(bookPayload);
@@ -121,9 +137,10 @@ export default function FormElements() {
         genre: "",
         date: "",
         price: "",
-        image: null,
+        coverPage: null,
         file: null,
         audio: null,
+        authorImage: null,
       });
 
       toast.success("Book added successfully!");
@@ -156,11 +173,12 @@ export default function FormElements() {
           </div>
           <div className="space-y-6">
             <FileInputExample onChange={(file) => handleChange("file", file)} label="Upload File"/>
+            <FileInputExample onChange={(authorImage) => handleChange("authorImage", authorImage)} label="Author Photo (PNG or JPG only)"/>
             <FileInputExample onChange={(audio) => handleChange("audio", audio)}  label="Upload Audio"/>
             <DropzoneComponent
               onDrop={(file) => {
                 if (file) {
-                  handleChange("image", file);
+                  handleChange("coverPage", file);
                 } else {
                   toast.error("Please drop a valid image file");
                 }

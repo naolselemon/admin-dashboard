@@ -9,6 +9,8 @@ import FormElements from "./pages/Forms/FormElements";
 import AppLayout from "./layout/AppLayout";
 import { ScrollToTop } from "./components/common/ScrollToTop";
 import Home from "./pages/Dashboard/Home";
+import { ToastContainer } from "react-toastify";
+
 
 // import SignUp from "./pages/AuthPages/SignUp";
 // import Avatars from "./pages/UiElements/Avatars";
@@ -54,6 +56,18 @@ export default function App() {
   return (
     <Router>
       <ScrollToTop />
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="colored"
+      />
       <Routes>
          {/*Public Routes*/ }
          <Route path="/signin" element={<SignIn/>} />
