@@ -113,7 +113,7 @@ export default function FormElements() {
         "author": bookData.author,
         "description": bookData.description,
         "genre": bookData.genre,
-        "date": bookData.date,
+        "createdAt": bookData.date,
         "price": parseFloat(bookData.price),
         "coverPageId": coverPageId,
         "fileId": fileId,

@@ -12,6 +12,7 @@ import Home from "./pages/Dashboard/Home";
 import { ToastContainer } from "react-toastify";
 
 
+
 // import SignUp from "./pages/AuthPages/SignUp";
 // import Avatars from "./pages/UiElements/Avatars";
 // import Buttons from "./pages/UiElements/Buttons";
@@ -77,6 +78,9 @@ export default function App() {
             <Route path="/home" element={<Home/>}/>
             <Route path="/form-elements" element={<FormElements/>}/>
             <Route path="/basic-tables" element={<BasicTables/>}/>
+          
+            <Route path='/not-found' element={<NotFound/>}/>
+
           </Route>
          </Route>
 
