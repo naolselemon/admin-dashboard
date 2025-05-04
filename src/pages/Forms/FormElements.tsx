@@ -79,8 +79,8 @@ export default function FormElements() {
       }
 
       // Enforce image upload
-      if (!bookData.coverPage || !bookData.file || !bookData.audio || !bookData.authorImage) {
-        toast.error("Please upload a cover page, file, audio, and author image");
+      if (!bookData.coverPage || !bookData.file ||  !bookData.authorImage) {
+        toast.error("Please upload a cover page, file, and author image");
         setIsLoading(false);
         return;
       }
