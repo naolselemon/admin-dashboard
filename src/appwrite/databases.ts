@@ -74,13 +74,13 @@ const uploadFile = async (file: File) => {
     try{
        const response =  storage.createFile(env.bucketId, ID.unique(), file)
        return response;
-    }catch(error:any){
+    }catch(error:unknown){
         console.log("File upload failed: ", error);
-        throw new Error(error);
+       
     }
     };
 
-const getFileViewUrl = (fileId) => {
+const getFileViewUrl = (fileId: unknown) => {
         return `${env.endpoint}/storage/buckets/${env.bucketId}/files/${fileId}/view?project=${env.projectId}`;
       };
 

@@ -103,7 +103,7 @@ export default function DefaultInputs({ bookData, onChange }: DefaultInputsProps
             id="date-picker"
             label="Date Picker Input"
             placeholder="Select a date"
-            onChange={(dates, dateString) => {
+            onChange={(_, dateString) => {
               onChange("date", dateString);
             }}
           />
