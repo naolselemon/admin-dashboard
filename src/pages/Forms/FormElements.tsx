@@ -89,23 +89,39 @@ export default function FormElements() {
 
       if (bookData.file) {
         const fileResponse = await uploadFile(bookData.file);
-        fileId = fileResponse.$id;
+        if (fileResponse && fileResponse.$id) {
+          fileId = fileResponse.$id;
+        } else {
+          throw new Error("File upload failed");
+        }
       }
 
       // Image is guaranteed to exist due to validation
       const imageResponse = await uploadFile(bookData.coverPage);
-      coverPageId = imageResponse.$id;
-      coverPageUrl = getFileViewUrl(coverPageId);
+      if (imageResponse && imageResponse.$id) {
+        coverPageId = imageResponse.$id;
+        coverPageUrl = getFileViewUrl(coverPageId);
+      } else {
+        throw new Error("Cover page upload failed");
+      }
 
       if (bookData.audio){
-        const audioResponse = await uploadFile(bookData.audio)
-        audioId = audioResponse.$id
+        const audioResponse = await uploadFile(bookData.audio);
+        if (audioResponse && audioResponse.$id) {
+          audioId = audioResponse.$id;
+        } else {
+          throw new Error("Audio upload failed");
+        }
       }
 
       if (bookData.authorImage) {
         const authorImageResponse = await uploadFile(bookData.authorImage);
-        authorImageId = authorImageResponse.$id;
-        authorImageUrl = getFileViewUrl(authorImageId);
+        if (authorImageResponse && authorImageResponse.$id) {
+          authorImageId = authorImageResponse.$id;
+          authorImageUrl = getFileViewUrl(authorImageId);
+        } else {
+          throw new Error("Author image upload failed");
+        }
       }
 
       const bookPayload = {

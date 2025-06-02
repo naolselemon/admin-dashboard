@@ -80,7 +80,7 @@ const uploadFile = async (file: File) => {
     }
     };
 
-const getFileViewUrl = (fileId: unknown) => {
+const getFileViewUrl = (fileId: string) => {
         return `${env.endpoint}/storage/buckets/${env.bucketId}/files/${fileId}/view?project=${env.projectId}`;
       };
 
